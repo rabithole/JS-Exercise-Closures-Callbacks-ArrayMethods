@@ -14,9 +14,12 @@
  * Invoking `processFirstItem` passing `['foo', 'bar']` and `(str) => str + str`,
  * should return 'foofoo'.
 */
+
 function processFirstItem(stringList, callback) {
   return callback(stringList[0])
 }
+
+console.log(processFirstItem(['foo', 'bar'], (str) => str + str ))
 
 // ⭐️ Example Challenge END ⭐️
 
@@ -57,10 +60,11 @@ function counter2() {
 Write a function called `inning` that generates a random number of points that a team scored in an inning. This should be a whole number between 0 and 2. */
 
 function inning(/*Code Here*/){
-
-    /*Code Here*/
-
+  let score = Math.floor(Math.random() * 3) + 0;
+  return score
 }
+
+console.log('Score for one team', inning())
 
 /* Task 3: finalScore()
 
@@ -75,13 +79,24 @@ finalScore(inning, 9) might return:
 }
 
 */ 
+function finalScore(inning, cb){
+  let home = 0;
+  let away = 0;
 
-function finalScore(/*code Here*/){
-
+  for(let i = 0; i < inning; i++){
+    home += cb();
+    away += cb();
+  }
   /*Code Here*/
+  return {
+    'Home': home,
+    'Away': away
+  }
 
 }
 
+console.log(finalScore(9, inning))
+// finalScore();
 /* Task 4: 
 
 Create a function called `scoreboard` that accepts the following parameters: 
@@ -91,7 +106,7 @@ Create a function called `scoreboard` that accepts the following parameters:
 (2) A number of innings
 
 and returns the score at each pont in the game, like so:
-
+[
 1st inning: awayTeam - homeTeam
 2nd inning: awayTeam - homeTeam
 3rd inning: awayTeam - homeTeam
@@ -101,11 +116,48 @@ and returns the score at each pont in the game, like so:
 7th inning: awayTeam - homeTeam
 8th inning: awayTeam - homeTeam
 9th inning: awayTeam - homeTeam
-
+]
 Final Score: awayTeam - homeTeam */
 
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
+function getInningScore(cb) {
+  let home = inning();
+  let away = inning();
+  return {
+    'Home': home,
+    'Away': away
+  }
 }
 
+console.log(getInningScore())
 
+
+function scoreBoard(cb1, numberInnings){
+  let innings = [];
+
+  // This really does all the work that is neccessary for most cases. 
+  for(let i = 0; i < numberInnings; i++){
+    innings.push({'Inning': `${cb1()} - ${cb1()}`})
+  }
+
+  // This prints the object. It can be parsed in different ways depending on the needs of the output. React will cover this completely. The important thing is the array of objects that has been return for further use by another application. 
+  for(let i = 0; i < innings.length; i++) {
+    let scores = innings[i].Inning;
+    console.log(`Inning ${i}:`, 'Home:', Number(scores.split(' ').splice(0,1)), 'Away:', Number(scores.split(' ').splice(2,1)))
+  }
+  console.log(innings)
+  return innings
+}
+
+scoreBoard(inning, 9);
+
+
+function scoreboard(inning,numOfInnings) {
+  let homeScore = 0
+  let awayScore = 0
+    for (let i = 0; i < numOfInnings; i ++){
+    homeScore += inning();
+    awayScore += inning();
+  }
+return `inning: ${numOfInnings} home: ${homeScore} away: ${awayScore}`
+}
+console.log(scoreboard(inning,7))
